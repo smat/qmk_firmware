@@ -67,45 +67,46 @@ enum custom_keycodes {
 #define NO_PIPE_MAC ALGR(NO_7)    // |
 #define NO_RCBR_MAC S(ALGR(NO_9)) // }
 
-#define LTAPL LT(KC_LOWER, KC_DEL)
-#define LTAPR LT(KC_RAISE, KC_BSPC)
+#define LTAPL LT(KC_LOWER, KC_BSPC)
+#define LTAPR TG(KC_RAISE)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
-                 KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,     KC_5,  KC_A,
-                 KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,  KC_B,
+                 KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,     KC_5,    KC_A,
+                 KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,    KC_B,
         	     KC_LGUI,  KC_A,    KC_S,    KC_D,    KC_F,     KC_G,
-                 KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,     KC_B,  KC_MUTE,  KC_LGUI,
-                                             KC_LALT, KC_LCTRL, LTAPL, KC_ENT,   KC_LGUI
+                 KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,     KC_B,    KC_MUTE,  LTAPR,
+                                             KC_LCTRL,LTAPL,    KC_LALT, KC_SPC,   KC_ENT
+    ),
+    [_GAMING] = LAYOUT(
+                 KC_ESC,  NO_ACUT,  KC_1,    KC_2,    KC_3,    KC_4,     KC_5,
+                 XXXXXXX, KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,     KC_6,
+        	     XXXXXXX, KC_LSFT,  KC_A,    KC_S,    KC_D,    KC_F,
+                 XXXXXXX, KC_LCTRL, KC_Z,    KC_X,    KC_C,    KC_V,     KC_MUTE,  LTAPR,
+                                             KC_LCTRL,KC_LOWER,KC_LALT,  KC_SPC,   KC_ENT
     ),
     [_LOWER] = LAYOUT(
-                 NO_ACUT, KC_F1,   KC_F2,     KC_F3,   KC_F4,       KC_F5,       _______,
-                 _______, KC_F11,  KC_F12,    XXXXXXX, XXXXXXX,     XXXXXXX,     _______,
-        	     _______, NO_EXLM, KC_ATMFIX, NO_HASH, KC_LESSMFIX, KC_GRTRMFIX,
-                 _______, NO_EQL,  NO_MINS,   NO_PLUS, KC_LCBRMFIX, KC_RCBRMFIX, _______, _______,
-                                              _______, _______,     _______,     _______, _______
+                 _______, KC_F1,   KC_F2,     KC_F3,   KC_F4,   XXXXXXX,     _______,
+                 _______, KC_F5,   KC_F6,     KC_F7,   KC_8,    XXXXXXX,     _______,
+        	     _______, KC_F9,   KC_F10,    KC_F11,  KC_F12,  _______,
+                 _______, _______, _______,   _______, _______, _______,     _______, _______,
+                                              _______, _______, _______,     _______, _______
     ),
     [_RAISE] = LAYOUT(
                  _______, _______, _______, _______, _______,  _______, _______,
-                 _______, KC_INS,  KC_PSCR, KC_APP,  XXXXXXX,  XXXXXXX, _______,
-        	     _______, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,  KC_CAPS,
-                 _______, KC_UNDO, KC_CUT,  KC_COPY, KC_PASTE, XXXXXXX, _______, _______,
+                 _______, _______, _______, _______, _______,  _______, _______,
+        	     _______, _______, _______, _______, _______,  _______,
+                 _______, _______, _______, _______, _______,  _______, _______, _______,
                                             _______, _______,  _______, _______, _______
     ),
     [_ADJUST] = LAYOUT(
                  XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,
                  RESET,   XXXXXXX, KC_QWERTY, KC_GAMING, CG_TOGG, XXXXXXX, XXXXXXX,
         	     XXXXXXX, XXXXXXX, CG_TOGG,   XXXXXXX,   XXXXXXX, XXXXXXX,
-                 XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                 XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, _______,
                                               _______,   _______, _______, KC_MS_BTN1, _______
     ),
-    [_GAMING] = LAYOUT(
-                 KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,     KC_5,  KC_A,
-                 KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,     KC_T,  KC_B,
-        	     XXXXXXX,  KC_A,    KC_S,    KC_D,    KC_F,     KC_G,
-                 KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,     KC_B,  KC_MUTE,  KC_LGUI,
-                                             KC_LALT, KC_LCTRL, LTAPL, KC_SPC,   XXXXXXX
-    ),
+
 };
 
 #define LOWER_AND_RAISE ((1UL << _LOWER) | (1UL << _RAISE))
@@ -121,9 +122,7 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
 
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LT(KC_RAISE, KC_BSPC):
-            return true;
-        case LT(KC_LOWER, KC_DEL):
+        case LT(KC_LOWER, KC_BSPC):
             return true;
         default:
             return false;
